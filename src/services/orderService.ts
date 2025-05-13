@@ -84,12 +84,16 @@ export const updateOrderStatus = (orderId: number, status: OrderStatus): Order |
 
 // Calculate total for an order
 export const calculateOrderTotal = (items: OrderItem[]): number => {
-  // This is a placeholder. In a real application, you would have prices for each item
-  // and calculate the actual total based on item prices and quantities
   return items.reduce((total, item) => total + item.quantity * 100, 0);
 };
 
 // Sync orders (for when new peers connect)
 export const syncOrders = (orders: Order[]): void => {
   localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+};
+
+// Clear all order history
+export const clearOrderHistory = (): void => {
+  localStorage.removeItem(ORDERS_KEY);
+  localStorage.removeItem(LAST_ORDER_ID_KEY);
 };

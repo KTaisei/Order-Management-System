@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOrders } from '../context/OrderContext';
 import SalesChart from '../components/SalesChart';
+import { Trash2 } from 'lucide-react';
+import * as orderService from '../services/orderService';
 
 const HistoryPage: React.FC = () => {
   const { allOrders } = useOrders();
@@ -47,6 +49,14 @@ const HistoryPage: React.FC = () => {
     if (diffMinutes < 1) return '<1 min';
     return `${diffMinutes} min`;
   };
+
+  // Handle clear history
+  const handleClearHistory = () => {
+    if (window.confirm('本当に全ての取引履歴を削除しますか？この操作は取り消せません。')) {
+      orderService.clearOrderHistory();
+      window.location.reload(); // Reload to refresh the data
+    }
+  };
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -55,6 +65,13 @@ const HistoryPage: React.FC = () => {
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-900">Transaction History</h1>
             <div className="flex space-x-4">
+              <button
+                onClick={handleClearHistory}
+                className="px-4 py-2 bg-red-100 text-red-700 rounded-md hover:bg-red-200 flex items-center gap-2"
+              >
+                <Trash2 size={18} />
+                履歴を削除
+              </button>
               <Link 
                 to="/" 
                 className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
