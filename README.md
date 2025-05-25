@@ -150,3 +150,8 @@ No environment variables are required for basic setup.
 ## 🤝 Contributing
 
 Feel free to submit issues and enhancement requests!
+
+## 起動方法
+
+一つのターミナルでは、 node server/index.js  を実行し、
+もう一つのターミナルでは、　npm run dev  を実行することにより、バックエンドと、フロントエンドそれぞれが起動する
