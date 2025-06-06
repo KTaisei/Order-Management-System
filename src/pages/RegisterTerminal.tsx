@@ -22,19 +22,19 @@ const RegisterTerminal: React.FC = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Register Terminal</h1>
+            <h1 className="text-2xl font-bold text-gray-900">レジ端末</h1>
             <div className="flex space-x-4">
               <Link 
                 to="/kitchen" 
                 className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
               >
-                Switch to Kitchen
+                厨房端末
               </Link>
               <Link 
                 to="/history" 
                 className="px-4 py-2 bg-blue-100 rounded-md text-blue-700 hover:bg-blue-200"
               >
-                View History
+                取引履歴
               </Link>
             </div>
           </div>
@@ -48,15 +48,6 @@ const RegisterTerminal: React.FC = () => {
             <OrderForm />
             
             <div className="mt-8">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">Recent Completed Orders</h2>
-                <button
-                  onClick={() => setShowCompleted(!showCompleted)}
-                  className="text-blue-600 hover:text-blue-800"
-                >
-                  {showCompleted ? 'Hide' : 'Show'}
-                </button>
-              </div>
               
               {showCompleted && (
                 <div className="space-y-4">

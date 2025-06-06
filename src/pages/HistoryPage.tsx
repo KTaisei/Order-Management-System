@@ -63,7 +63,7 @@ const HistoryPage: React.FC = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Transaction History</h1>
+            <h1 className="text-2xl font-bold text-gray-900">取引履歴</h1>
             <div className="flex space-x-4">
               <button
                 onClick={handleClearHistory}
@@ -76,13 +76,13 @@ const HistoryPage: React.FC = () => {
                 to="/" 
                 className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
               >
-                Register Terminal
+                レジ端末
               </Link>
               <Link 
                 to="/kitchen" 
                 className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
               >
-                Kitchen Terminal
+                厨房端末
               </Link>
             </div>
           </div>
@@ -100,7 +100,7 @@ const HistoryPage: React.FC = () => {
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              Analytics
+              分析
             </button>
             <button
               onClick={() => setView('list')}
@@ -110,7 +110,7 @@ const HistoryPage: React.FC = () => {
                   : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
             >
-              Order List
+              注文一覧
             </button>
           </div>
         </div>
@@ -130,10 +130,10 @@ const HistoryPage: React.FC = () => {
                       onChange={(e) => setFilterStatus(e.target.value)}
                       className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                     >
-                      <option value="all">All Orders</option>
-                      <option value="new">New</option>
-                      <option value="in-progress">In Progress</option>
-                      <option value="completed">Completed</option>
+                      <option value="all">全ての注文</option>
+                      <option value="new">新規</option>
+
+                      <option value="completed">完了</option>
                     </select>
                   </div>
                   
@@ -158,7 +158,7 @@ const HistoryPage: React.FC = () => {
             
             {filteredOrders.length === 0 ? (
               <div className="p-6 text-center text-gray-500">
-                No orders found matching your filters
+                注文はまだありません。フィルターを変更するか、検索してください
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -166,19 +166,19 @@ const HistoryPage: React.FC = () => {
                   <thead className="bg-gray-50">
                     <tr>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Order #
+                        注文番号
                       </th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Items
+                        注文内容
                       </th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Created
+                        受付時間
                       </th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Status
+                        状態
                       </th>
                       <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                        Processing Time
+                        製作時間
                       </th>
                     </tr>
                   </thead>

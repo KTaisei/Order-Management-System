@@ -81,7 +81,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
             <li key={index} className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{item.quantity}x</span>
-                <span>{item.name}</span>
+                <span className="font-medium text-lg">{item.name}</span>
               </div>
               <span className="text-gray-600">¥{item.price * item.quantity}</span>
             </li>
@@ -94,7 +94,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
         <div className="flex justify-between items-center">
           <div className="space-y-1">
             <div className="text-sm text-gray-600">
-              Created: <span className="font-medium">{formatTime(order.createdAt)}</span>
+              受付: <span className="font-medium">{formatTime(order.createdAt)}</span>
             </div>
             {order.completedAt && (
               <div className="text-sm text-gray-600">
@@ -110,7 +110,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
                 className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors flex items-center gap-2"
               >
                 <CheckCircle size={18} />
-                Complete
+                完了
               </button>
             </div>
           )}

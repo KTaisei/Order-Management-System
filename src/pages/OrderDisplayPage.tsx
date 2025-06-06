@@ -60,7 +60,7 @@ const OrderDisplayPage: React.FC = () => {
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="text-6xl text-gray-400 mb-8">📋</div>
-          <h1 className="text-4xl font-bold text-white mb-4">No Active Orders</h1>
+          <h1 className="text-4xl font-bold text-white mb-4">注文はありません</h1>
           <p className="text-xl text-gray-400 mb-8">
             {filterStatus === 'all' ? 'All orders have been completed' : 
              filterStatus === 'new' ? 'No new orders' : 'No orders in progress'}
@@ -70,13 +70,13 @@ const OrderDisplayPage: React.FC = () => {
               to="/" 
               className="px-8 py-4 bg-blue-600 text-white rounded-lg text-xl hover:bg-blue-700 transition-colors"
             >
-              Back to Register
+              レジ端末へ移動
             </Link>
             <Link 
               to="/kitchen" 
               className="px-8 py-4 bg-gray-600 text-white rounded-lg text-xl hover:bg-gray-700 transition-colors"
             >
-              Kitchen Terminal
+              厨房端末へ移動
             </Link>
           </div>
         </div>
@@ -92,7 +92,7 @@ const OrderDisplayPage: React.FC = () => {
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-4">
               <Monitor size={32} className="text-purple-400" />
-              <h1 className="text-3xl font-bold">Order Display</h1>
+              <h1 className="text-3xl font-bold">注文一覧表示</h1>
             </div>
             <div className="flex items-center space-x-4">
               <select
@@ -100,21 +100,21 @@ const OrderDisplayPage: React.FC = () => {
                 onChange={(e) => setFilterStatus(e.target.value as 'all' | 'new' | 'in-progress')}
                 className="px-4 py-2 bg-gray-700 text-white rounded-lg border border-gray-600 focus:border-blue-500 focus:outline-none text-lg"
               >
-                <option value="all">All Orders ({activeOrders.length})</option>
-                <option value="new">New Orders ({activeOrders.filter(o => o.status === 'new').length})</option>
-                <option value="in-progress">In Progress ({activeOrders.filter(o => o.status === 'in-progress').length})</option>
+                <option value="all">全ての注文 ({activeOrders.length})</option>
+                <option value="new">新しい注文 ({activeOrders.filter(o => o.status === 'new').length})</option>
+                <option value="in-progress">完了した注文 ({activeOrders.filter(o => o.status === 'in-progress').length})</option>
               </select>
               <Link 
                 to="/" 
                 className="px-6 py-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors"
               >
-                Register
+                レジ端末
               </Link>
               <Link 
                 to="/kitchen" 
                 className="px-6 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Kitchen
+                厨房端末
               </Link>
             </div>
           </div>
@@ -154,14 +154,14 @@ const OrderDisplayPage: React.FC = () => {
                     ¥{order.totalPrice.toLocaleString()}
                   </div>
                   <div className="text-white/80 text-sm">
-                    Created: {formatTime(order.createdAt)}
+                    受付時間: {formatTime(order.createdAt)}
                   </div>
                 </div>
               </div>
 
               {/* Order Items */}
               <div className="p-6">
-                <h4 className="text-xl font-bold mb-4 text-gray-800">Items</h4>
+                <h4 className="text-xl font-bold mb-4 text-gray-800">注文内容</h4>
                 <div className="space-y-3 mb-6">
                   {order.items.map((item, index) => (
                     <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
@@ -170,7 +170,7 @@ const OrderDisplayPage: React.FC = () => {
                           <span className="text-lg font-bold text-blue-600">{item.quantity}</span>
                         </div>
                         <div>
-                          <h5 className="font-semibold text-gray-800">{item.name}</h5>
+                          <h5 className="font-semibold text-gray-800 text-3xl">{item.name}</h5>
                           <p className="text-sm text-gray-600">¥{item.price} each</p>
                         </div>
                       </div>
@@ -188,7 +188,7 @@ const OrderDisplayPage: React.FC = () => {
                     className="flex items-center justify-center space-x-2 w-full py-4 bg-green-600 text-white rounded-lg text-xl font-semibold hover:bg-green-700 transition-colors"
                   >
                     <CheckCircle size={24} />
-                    <span>Mark Complete</span>
+                    <span>完了</span>
                   </button>
                 )}
               </div>
