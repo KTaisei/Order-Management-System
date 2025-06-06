@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RegisterTerminal from './pages/RegisterTerminal';
 import KitchenTerminal from './pages/KitchenTerminal';
 import HistoryPage from './pages/HistoryPage';
+import OrderDisplayPage from './pages/OrderDisplayPage';
 import { OrderProvider } from './context/OrderContext';
 
 const App: React.FC = () => {
@@ -22,6 +23,11 @@ const App: React.FC = () => {
         <Route path="/history" element={
           <OrderProvider terminalType="register">
             <HistoryPage />
+          </OrderProvider>
+        } />
+        <Route path="/display" element={
+          <OrderProvider terminalType="kitchen">
+            <OrderDisplayPage />
           </OrderProvider>
         } />
       </Routes>

@@ -4,9 +4,10 @@ import OrderList from '../components/OrderList';
 import OrderCard from '../components/OrderCard';
 import ConnectionStatus from '../components/ConnectionStatus';
 import { useOrders } from '../context/OrderContext';
+import { Monitor } from 'lucide-react';
 
 const KitchenTerminal: React.FC = () => {
-  const { activeOrders, completedOrders, isConnected, connectedTo } = useOrders();
+  const { activeOrders, completedOrders, isConnected, connectedClients } = useOrders();
   const [showCompleted, setShowCompleted] = useState(false);
   const [playSound, setPlaySound] = useState(true);
   const [orderCount, setOrderCount] = useState(0);
@@ -56,6 +57,13 @@ const KitchenTerminal: React.FC = () => {
                 {playSound ? 'Sound: On' : 'Sound: Off'}
               </button>
               <Link 
+                to="/display" 
+                className="px-4 py-2 bg-purple-100 rounded-md text-purple-700 hover:bg-purple-200 flex items-center gap-2"
+              >
+                <Monitor size={18} />
+                Order Display
+              </Link>
+              <Link 
                 to="/" 
                 className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
               >
@@ -69,7 +77,7 @@ const KitchenTerminal: React.FC = () => {
               </Link>
             </div>
           </div>
-          <ConnectionStatus isConnected={isConnected} connectedTo={connectedTo} />
+          <ConnectionStatus isConnected={isConnected} connectedClients={connectedClients} />
         </div>
       </header>
       
