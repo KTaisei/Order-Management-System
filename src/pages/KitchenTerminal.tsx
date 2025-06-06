@@ -12,9 +12,8 @@ const KitchenTerminal: React.FC = () => {
   const [playSound, setPlaySound] = useState(true);
   const [orderCount, setOrderCount] = useState(0);
   
-  // Filter orders
+  // Filter orders - now we only show new orders since there's no "in-progress" state
   const newOrders = activeOrders.filter(order => order.status === 'new');
-  const inProgressOrders = activeOrders.filter(order => order.status === 'in-progress');
   
   // Get only recent completed orders (last 30 minutes)
   const recentCompletedOrders = completedOrders.filter(order => {
@@ -86,20 +85,13 @@ const KitchenTerminal: React.FC = () => {
           <div>
             <OrderList 
               orders={newOrders} 
-              title={`New Orders (${newOrders.length})`}
+              title={`Active Orders (${newOrders.length})`}
               isKitchenView={true}
-              emptyMessage="No new orders"
+              emptyMessage="No active orders"
             />
           </div>
           
           <div>
-            <OrderList 
-              orders={inProgressOrders} 
-              title={`In Progress (${inProgressOrders.length})`}
-              isKitchenView={true}
-              emptyMessage="No orders in progress"
-            />
-            
             <div className="mt-8">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-semibold">Recent Completed</h2>

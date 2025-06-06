@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useOrders } from '../context/OrderContext';
 import { Order } from '../types';
-import { Clock, CheckCircle, Play, Monitor } from 'lucide-react';
+import { Clock, CheckCircle, Monitor } from 'lucide-react';
 
 const OrderDisplayPage: React.FC = () => {
   const { activeOrders, updateOrderStatus } = useOrders();
@@ -181,26 +181,15 @@ const OrderDisplayPage: React.FC = () => {
                   ))}
                 </div>
 
-                {/* Action Buttons */}
+                {/* Action Button */}
                 {order.status !== 'completed' && (
-                  <div className="flex flex-col space-y-3">
-                    {order.status === 'new' && (
-                      <button
-                        onClick={() => handleStatusChange(order.id, 'in-progress')}
-                        className="flex items-center justify-center space-x-2 w-full py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors"
-                      >
-                        <Play size={20} />
-                        <span>Start Cooking</span>
-                      </button>
-                    )}
-                    <button
-                      onClick={() => handleStatusChange(order.id, 'completed')}
-                      className="flex items-center justify-center space-x-2 w-full py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors"
-                    >
-                      <CheckCircle size={20} />
-                      <span>Mark Complete</span>
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => handleStatusChange(order.id, 'completed')}
+                    className="flex items-center justify-center space-x-2 w-full py-4 bg-green-600 text-white rounded-lg text-xl font-semibold hover:bg-green-700 transition-colors"
+                  >
+                    <CheckCircle size={24} />
+                    <span>Mark Complete</span>
+                  </button>
                 )}
               </div>
             </div>

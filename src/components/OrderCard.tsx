@@ -80,8 +80,8 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
           {order.items.map((item, index) => (
             <li key={index} className="flex justify-between items-center">
               <div className="flex items-center gap-2">
-                <span className="font-bold">{item.quantity}x</span>
-                <span className="text-lg font-bold">{item.name}</span>
+                <span className="font-medium">{item.quantity}x</span>
+                <span>{item.name}</span>
               </div>
               <span className="text-gray-600">¥{item.price * item.quantity}</span>
             </li>
@@ -105,17 +105,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
           
           {isKitchenView && order.status !== 'completed' && (
             <div className="flex gap-2">
-              {order.status === 'new' && (
-                <button
-                  onClick={() => handleStatusChange('in-progress')}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors"
-                >
-                  Start
-                </button>
-              )}
               <button
                 onClick={() => handleStatusChange('completed')}
-                className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors flex items-center gap-2"
+                className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors flex items-center gap-2"
               >
                 <CheckCircle size={18} />
                 Complete
