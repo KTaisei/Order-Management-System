@@ -62,7 +62,7 @@ const OrderDisplayPage: React.FC = () => {
           <div className="text-6xl text-gray-400 mb-8">📋</div>
           <h1 className="text-4xl font-bold text-white mb-4">注文はありません</h1>
           <p className="text-xl text-gray-400 mb-8">
-            {filterStatus === 'all' ? 'All orders have been completed' : 
+            {filterStatus === 'all' ? '全ての注文は完了しました' : 
              filterStatus === 'new' ? 'No new orders' : 'No orders in progress'}
           </p>
           <div className="flex justify-center space-x-4">

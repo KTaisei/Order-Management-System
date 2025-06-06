@@ -85,7 +85,7 @@ const KitchenTerminal: React.FC = () => {
           <div>
             <OrderList 
               orders={newOrders} 
-              title={`Active Orders (${newOrders.length})`}
+              title={`注文一覧 (${newOrders.length})`}
               isKitchenView={true}
               emptyMessage="No active orders"
             />
