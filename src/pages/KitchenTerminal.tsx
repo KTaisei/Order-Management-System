@@ -15,13 +15,18 @@ const KitchenTerminal: React.FC = () => {
   // Filter orders - now we only show new orders since there's no "in-progress" state
   const newOrders = activeOrders.filter(order => order.status === 'new');
   
+  // Sort orders by creation time (oldest first) for kitchen view
+  const sortedNewOrders = [...newOrders].sort((a, b) => 
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+  
   // Get only recent completed orders (last 30 minutes)
   const recentCompletedOrders = completedOrders.filter(order => {
     const completedTime = new Date(order.completedAt || '');
     const thirtyMinutesAgo = new Date();
     thirtyMinutesAgo.setMinutes(thirtyMinutesAgo.getMinutes() - 30);
     return completedTime > thirtyMinutesAgo;
-  });
+  }).sort((a, b) => new Date(b.completedAt || '').getTime() - new Date(a.completedAt || '').getTime());
   
   // Play sound when new order arrives
   useEffect(() => {
@@ -43,7 +48,7 @@ const KitchenTerminal: React.FC = () => {
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">厨房端末</h1>
+            <h1 className="text-2xl font-bold text-gray-900">Kitchen Terminal</h1>
             <div className="flex space-x-4">
               <button
                 onClick={() => setPlaySound(!playSound)}
@@ -60,19 +65,19 @@ const KitchenTerminal: React.FC = () => {
                 className="px-4 py-2 bg-purple-100 rounded-md text-purple-700 hover:bg-purple-200 flex items-center gap-2"
               >
                 <Monitor size={18} />
-                注文一覧表示
+                Order Display
               </Link>
               <Link 
                 to="/" 
                 className="px-4 py-2 bg-gray-200 rounded-md text-gray-700 hover:bg-gray-300"
               >
-                レジ端末へ移動
+                Switch to Register
               </Link>
               <Link 
                 to="/history" 
                 className="px-4 py-2 bg-blue-100 rounded-md text-blue-700 hover:bg-blue-200"
               >
-                取引履歴
+                View History
               </Link>
             </div>
           </div>
@@ -84,8 +89,8 @@ const KitchenTerminal: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div>
             <OrderList 
-              orders={newOrders} 
-              title={`注文一覧 (${newOrders.length})`}
+              orders={sortedNewOrders} 
+              title={`Active Orders (${sortedNewOrders.length}) - Oldest First`}
               isKitchenView={true}
               emptyMessage="No active orders"
             />
@@ -94,7 +99,7 @@ const KitchenTerminal: React.FC = () => {
           <div>
             <div className="mt-8">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-semibold">完了した注文</h2>
+                <h2 className="text-xl font-semibold">Recent Completed</h2>
                 <button
                   onClick={() => setShowCompleted(!showCompleted)}
                   className="text-blue-600 hover:text-blue-800"
@@ -107,11 +112,11 @@ const KitchenTerminal: React.FC = () => {
                 <div className="space-y-4">
                   {recentCompletedOrders.length > 0 ? (
                     recentCompletedOrders.map(order => (
-                      <OrderCard key={order.id} order={order} isKitchenView={false} />
+                      <OrderCard key={`completed-${order.id}`} order={order} isKitchenView={false} />
                     ))
                   ) : (
                     <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 text-center text-gray-500">
-                      過去30分間に完了した注文はなし
+                      No completed orders in the last 30 minutes
                     </div>
                   )}
                 </div>

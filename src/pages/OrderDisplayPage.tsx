@@ -14,15 +14,22 @@ const OrderDisplayPage: React.FC = () => {
     return order.status === filterStatus;
   });
 
-  const handleStatusChange = (orderId: number, status: 'new' | 'in-progress' | 'completed') => {
-    updateOrderStatus(orderId, status);
-  };
+  // Sort orders by creation time (oldest first)
+  const sortedOrders = [...filteredOrders].sort((a, b) => 
+    new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
 
-  const handleCancelOrder = (orderId: number) => {
+  const handleStatusChange = React.useCallback((orderId: number, status: 'new' | 'in-progress' | 'completed') => {
+    console.log(`Display: Updating order ${orderId} to status ${status}`);
+    updateOrderStatus(orderId, status);
+  }, [updateOrderStatus]);
+
+  const handleCancelOrder = React.useCallback((orderId: number) => {
     if (window.confirm(`注文 #${orderId} を取り消しますか？`)) {
+      console.log(`Display: Canceling order ${orderId}`);
       cancelOrder(orderId);
     }
-  };
+  }, [cancelOrder]);
 
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -61,7 +68,7 @@ const OrderDisplayPage: React.FC = () => {
     }
   };
 
-  if (filteredOrders.length === 0) {
+  if (sortedOrders.length === 0) {
     return (
       <div className="min-h-screen bg-gray-900 flex items-center justify-center">
         <div className="text-center">
@@ -131,13 +138,13 @@ const OrderDisplayPage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-6">
           <h2 className="text-2xl font-semibold text-gray-300">
-            Showing {filteredOrders.length} order{filteredOrders.length !== 1 ? 's' : ''}
+            Showing {sortedOrders.length} order{sortedOrders.length !== 1 ? 's' : ''} (Oldest First)
           </h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-          {filteredOrders.map((order) => (
-            <div key={order.id} className="bg-white text-gray-900 rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-200">
+          {sortedOrders.map((order) => (
+            <div key={`display-order-${order.id}-${order.status}`} className="bg-white text-gray-900 rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-200">
               {/* Order Header */}
               <div className={`${getStatusColor(order.status)} p-6 text-white`}>
                 <div className="flex justify-between items-start mb-4">
@@ -193,6 +200,7 @@ const OrderDisplayPage: React.FC = () => {
                     <button
                       onClick={() => handleCancelOrder(order.id)}
                       className="flex items-center justify-center space-x-2 flex-1 py-3 bg-red-600 text-white rounded-lg text-lg font-semibold hover:bg-red-700 transition-colors"
+                      data-order-id={order.id}
                     >
                       <X size={20} />
                       <span>Cancel</span>
@@ -200,6 +208,7 @@ const OrderDisplayPage: React.FC = () => {
                     <button
                       onClick={() => handleStatusChange(order.id, 'completed')}
                       className="flex items-center justify-center space-x-2 flex-1 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors"
+                      data-order-id={order.id}
                     >
                       <CheckCircle size={20} />
                       <span>Complete</span>
