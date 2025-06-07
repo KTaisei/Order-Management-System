@@ -28,9 +28,19 @@ export const OrderProvider: React.FC<{
 
   // 初期データを読み込む
   useEffect(() => {
-    setActiveOrders(orderService.getActiveOrders());
-    setCompletedOrders(orderService.getCompletedOrders());
-    setAllOrders(orderService.getOrders());
+    const loadInitialData = () => {
+      const active = orderService.getActiveOrders();
+      const completed = orderService.getCompletedOrders();
+      const all = orderService.getOrders();
+      
+      console.log('Loading initial data:', { active, completed, all });
+      
+      setActiveOrders(active);
+      setCompletedOrders(completed);
+      setAllOrders(all);
+    };
+    
+    loadInitialData();
   }, []);
 
   // WebSocket接続状態を監視
@@ -48,18 +58,22 @@ export const OrderProvider: React.FC<{
   // WebSocketイベントリスナーを設定
   useEffect(() => {
     const removeNewOrderListener = socketService.addListener('new-order', (order: Order) => {
+      console.log('Received new-order event:', order);
       handleNewOrder(order);
     });
 
     const removeUpdateOrderListener = socketService.addListener('update-order', (order: Order) => {
+      console.log('Received update-order event:', order);
       handleOrderUpdate(order);
     });
 
     const removeCompleteOrderListener = socketService.addListener('complete-order', (order: Order) => {
+      console.log('Received complete-order event:', order);
       handleOrderComplete(order);
     });
 
     const removeCancelOrderListener = socketService.addListener('cancel-order', (orderId: number) => {
+      console.log('Received cancel-order event:', orderId);
       handleOrderCancel(orderId);
     });
 
@@ -77,50 +91,98 @@ export const OrderProvider: React.FC<{
   }, []);
 
   const handleNewOrder = (order: Order) => {
-    setActiveOrders(prev => [...prev, order]);
-    setAllOrders(prev => [...prev, order]);
-    orderService.syncOrders([...allOrders, order]);
+    console.log('Handling new order:', order);
+    setActiveOrders(prev => {
+      const updated = [...prev, order];
+      console.log('Updated active orders:', updated);
+      return updated;
+    });
+    setAllOrders(prev => {
+      const updated = [...prev, order];
+      console.log('Updated all orders:', updated);
+      orderService.syncOrders(updated);
+      return updated;
+    });
   };
 
   const handleOrderUpdate = (updatedOrder: Order) => {
-    setActiveOrders(prev => 
-      prev.map(order => order.id === updatedOrder.id ? updatedOrder : order)
-    );
-    setAllOrders(prev =>
-      prev.map(order => order.id === updatedOrder.id ? updatedOrder : order)
-    );
-    orderService.syncOrders(allOrders.map(order => 
-      order.id === updatedOrder.id ? updatedOrder : order
-    ));
+    console.log('Handling order update:', updatedOrder);
+    setActiveOrders(prev => {
+      const updated = prev.map(order => order.id === updatedOrder.id ? updatedOrder : order);
+      console.log('Updated active orders after update:', updated);
+      return updated;
+    });
+    setAllOrders(prev => {
+      const updated = prev.map(order => order.id === updatedOrder.id ? updatedOrder : order);
+      console.log('Updated all orders after update:', updated);
+      orderService.syncOrders(updated);
+      return updated;
+    });
   };
 
   const handleOrderComplete = (completedOrder: Order) => {
-    setActiveOrders(prev => prev.filter(order => order.id !== completedOrder.id));
-    setCompletedOrders(prev => [completedOrder, ...prev]);
-    setAllOrders(prev =>
-      prev.map(order => order.id === completedOrder.id ? completedOrder : order)
-    );
-    orderService.syncOrders(allOrders.map(order => 
-      order.id === completedOrder.id ? completedOrder : order
-    ));
+    console.log('Handling order completion:', completedOrder);
+    setActiveOrders(prev => {
+      const updated = prev.filter(order => order.id !== completedOrder.id);
+      console.log('Updated active orders after completion:', updated);
+      return updated;
+    });
+    setCompletedOrders(prev => {
+      const updated = [completedOrder, ...prev];
+      console.log('Updated completed orders:', updated);
+      return updated;
+    });
+    setAllOrders(prev => {
+      const updated = prev.map(order => order.id === completedOrder.id ? completedOrder : order);
+      console.log('Updated all orders after completion:', updated);
+      orderService.syncOrders(updated);
+      return updated;
+    });
   };
 
   const handleOrderCancel = (orderId: number) => {
-    setActiveOrders(prev => prev.filter(order => order.id !== orderId));
-    setAllOrders(prev => prev.filter(order => order.id !== orderId));
-    orderService.cancelOrder(orderId);
+    console.log('Handling order cancellation:', orderId);
+    setActiveOrders(prev => {
+      const updated = prev.filter(order => order.id !== orderId);
+      console.log('Updated active orders after cancellation:', updated);
+      return updated;
+    });
+    setAllOrders(prev => {
+      const updated = prev.filter(order => order.id !== orderId);
+      console.log('Updated all orders after cancellation:', updated);
+      orderService.syncOrders(updated);
+      return updated;
+    });
   };
 
   const addOrder = (items: OrderItem[], totalPrice: number) => {
+    console.log('Adding new order:', { items, totalPrice });
     const newOrder = orderService.addOrder(items, totalPrice);
+    console.log('Created new order:', newOrder);
     handleNewOrder(newOrder);
     socketService.sendNewOrder(newOrder);
     return newOrder;
   };
 
   const updateOrderStatus = (orderId: number, status: 'new' | 'in-progress' | 'completed') => {
+    console.log(`Updating order ${orderId} to status ${status}`);
+    
+    // Find the order first to make sure it exists
+    const existingOrder = allOrders.find(order => order.id === orderId);
+    if (!existingOrder) {
+      console.error(`Order ${orderId} not found in allOrders:`, allOrders);
+      return;
+    }
+    
+    console.log('Found existing order:', existingOrder);
+    
     const updatedOrder = orderService.updateOrderStatus(orderId, status);
-    if (!updatedOrder) return;
+    if (!updatedOrder) {
+      console.error(`Failed to update order ${orderId} in orderService`);
+      return;
+    }
+
+    console.log('Order updated in service:', updatedOrder);
 
     if (status === 'completed') {
       handleOrderComplete(updatedOrder);
@@ -132,6 +194,23 @@ export const OrderProvider: React.FC<{
   };
 
   const cancelOrder = (orderId: number) => {
+    console.log(`Canceling order ${orderId}`);
+    
+    // Find the order first to make sure it exists
+    const existingOrder = allOrders.find(order => order.id === orderId);
+    if (!existingOrder) {
+      console.error(`Order ${orderId} not found in allOrders:`, allOrders);
+      return;
+    }
+    
+    console.log('Found existing order to cancel:', existingOrder);
+    
+    const success = orderService.cancelOrder(orderId);
+    if (!success) {
+      console.error(`Failed to cancel order ${orderId} in orderService`);
+      return;
+    }
+    
     handleOrderCancel(orderId);
     socketService.sendCancelOrder(orderId);
   };
