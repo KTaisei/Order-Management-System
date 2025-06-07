@@ -1,5 +1,4 @@
-# Local Network Food Stall Order Management System
-
+# Cultural Festival Order Management System
 A real-time order management system designed for food stalls, enabling seamless communication between the register and kitchen terminals over a local network.
 
 ## Features
@@ -48,23 +47,6 @@ A real-time order management system designed for food stalls, enabling seamless 
    ```bash
    npm install
    ```
-
-## 🚀 Running the Application
-
-1. Start the Socket.IO server:
-   ```bash
-   npm run server
-   ```
-
-2. In a new terminal, start the frontend development server:
-   ```bash
-   npm run dev
-   ```
-
-3. Access the terminals:
-   - Register Terminal: `http://localhost:5173`
-   - Kitchen Terminal: `http://localhost:5173/kitchen`
-   - Analytics Dashboard: `http://localhost:5173/history`
 
 ## 🔧 Configuration
 
