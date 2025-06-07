@@ -82,6 +82,19 @@ export const updateOrderStatus = (orderId: number, status: OrderStatus): Order |
   return orders[orderIndex];
 };
 
+// Cancel order
+export const cancelOrder = (orderId: number): boolean => {
+  const orders = getOrders();
+  const filteredOrders = orders.filter(order => order.id !== orderId);
+  
+  if (filteredOrders.length === orders.length) {
+    return false; // Order not found
+  }
+  
+  localStorage.setItem(ORDERS_KEY, JSON.stringify(filteredOrders));
+  return true;
+};
+
 // Calculate total for an order
 export const calculateOrderTotal = (items: OrderItem[]): number => {
   return items.reduce((total, item) => total + item.quantity * 100, 0);

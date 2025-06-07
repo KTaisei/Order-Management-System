@@ -27,7 +27,7 @@ class SocketService {
       console.error('接続エラー:', error);
     });
 
-    ['new-order', 'update-order', 'complete-order', 'clientCount'].forEach(event => {
+    ['new-order', 'update-order', 'complete-order', 'cancel-order', 'clientCount'].forEach(event => {
       this.socket.on(event, (data) => {
         const listeners = this.listeners.get(event);
         if (listeners) {
@@ -58,6 +58,10 @@ class SocketService {
 
   public sendCompleteOrder(order: Order) {
     this.socket?.emit('complete-order', order);
+  }
+
+  public sendCancelOrder(orderId: number) {
+    this.socket?.emit('cancel-order', orderId);
   }
 
   public isConnected(): boolean {

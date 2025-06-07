@@ -44,6 +44,11 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('complete-order', order);
   });
 
+  socket.on('cancel-order', (orderId) => {
+    console.log('注文取り消し:', orderId);
+    socket.broadcast.emit('cancel-order', orderId);
+  });
+
   socket.on('disconnect', () => {
     console.log('クライアント切断:', socket.id);
     clients.delete(socket.id);

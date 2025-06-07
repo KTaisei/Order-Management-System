@@ -9,6 +9,7 @@ interface OrderContextType {
   allOrders: Order[];
   addOrder: (items: OrderItem[], totalPrice: number) => void;
   updateOrderStatus: (orderId: number, status: 'new' | 'in-progress' | 'completed') => void;
+  cancelOrder: (orderId: number) => void;
   isConnected: boolean;
   connectedClients: number;
 }
@@ -58,6 +59,10 @@ export const OrderProvider: React.FC<{
       handleOrderComplete(order);
     });
 
+    const removeCancelOrderListener = socketService.addListener('cancel-order', (orderId: number) => {
+      handleOrderCancel(orderId);
+    });
+
     const removeClientCountListener = socketService.addListener('clientCount', (count: number) => {
       setConnectedClients(count);
     });
@@ -66,6 +71,7 @@ export const OrderProvider: React.FC<{
       removeNewOrderListener();
       removeUpdateOrderListener();
       removeCompleteOrderListener();
+      removeCancelOrderListener();
       removeClientCountListener();
     };
   }, []);
@@ -99,6 +105,12 @@ export const OrderProvider: React.FC<{
     ));
   };
 
+  const handleOrderCancel = (orderId: number) => {
+    setActiveOrders(prev => prev.filter(order => order.id !== orderId));
+    setAllOrders(prev => prev.filter(order => order.id !== orderId));
+    orderService.cancelOrder(orderId);
+  };
+
   const addOrder = (items: OrderItem[], totalPrice: number) => {
     const newOrder = orderService.addOrder(items, totalPrice);
     handleNewOrder(newOrder);
@@ -119,12 +131,18 @@ export const OrderProvider: React.FC<{
     }
   };
 
+  const cancelOrder = (orderId: number) => {
+    handleOrderCancel(orderId);
+    socketService.sendCancelOrder(orderId);
+  };
+
   const value = {
     activeOrders,
     completedOrders,
     allOrders,
     addOrder,
     updateOrderStatus,
+    cancelOrder,
     isConnected,
     connectedClients
   };
