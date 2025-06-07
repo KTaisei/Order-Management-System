@@ -32,7 +32,7 @@ const OrderList: React.FC<OrderListProps> = ({
         <div className="space-y-4 max-h-[calc(100vh-12rem)] overflow-y-auto pr-2">
           {sortedOrders.map(order => (
             <OrderCard 
-              key={`order-${order.id}-${order.status}`} 
+              key={`ordercard-${order.id}-${order.status}-${order.createdAt}`} 
               order={order} 
               isKitchenView={isKitchenView} 
             />

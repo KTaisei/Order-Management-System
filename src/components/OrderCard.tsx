@@ -11,17 +11,21 @@ interface OrderCardProps {
 const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) => {
   const { updateOrderStatus, cancelOrder } = useOrders();
   
-  const handleStatusChange = React.useCallback((orderId: number, status: OrderStatus) => {
-    console.log(`Updating order ${orderId} to status ${status}`);
-    updateOrderStatus(orderId, status);
-  }, [updateOrderStatus]);
+  const handleStatusChange = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log(`Updating order ${order.id} to status completed`);
+    updateOrderStatus(order.id, 'completed');
+  }, [order.id, updateOrderStatus]);
   
-  const handleCancelOrder = React.useCallback((orderId: number) => {
-    if (window.confirm(`注文 #${orderId} を取り消しますか？`)) {
-      console.log(`Canceling order ${orderId}`);
-      cancelOrder(orderId);
+  const handleCancelOrder = React.useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (window.confirm(`注文 #${order.id} を取り消しますか？`)) {
+      console.log(`Canceling order ${order.id}`);
+      cancelOrder(order.id);
     }
-  }, [cancelOrder]);
+  }, [order.id, cancelOrder]);
   
   const formatTime = (timestamp: string) => {
     const date = new Date(timestamp);
@@ -86,7 +90,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
       <div className="p-4 bg-white bg-opacity-50">
         <ul className="space-y-2">
           {order.items.map((item, index) => (
-            <li key={index} className="flex justify-between items-center">
+            <li key={`${order.id}-item-${index}`} className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{item.quantity}x</span>
                 <span>{item.name}</span>
@@ -115,9 +119,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
             <div className="flex gap-2">
               {/* 取り消しボタン */}
               <button
-                onClick={() => handleCancelOrder(order.id)}
+                onClick={handleCancelOrder}
                 className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition-colors flex items-center gap-2"
-                data-order-id={order.id}
+                type="button"
               >
                 <X size={18} />
                 Cancel
@@ -126,9 +130,9 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
               {/* 完了ボタン（キッチンビューのみ） */}
               {isKitchenView && (
                 <button
-                  onClick={() => handleStatusChange(order.id, 'completed')}
+                  onClick={handleStatusChange}
                   className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 transition-colors flex items-center gap-2"
-                  data-order-id={order.id}
+                  type="button"
                 >
                   <CheckCircle size={18} />
                   Complete

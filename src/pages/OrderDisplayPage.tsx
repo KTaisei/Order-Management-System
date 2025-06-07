@@ -19,16 +19,24 @@ const OrderDisplayPage: React.FC = () => {
     new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
 
-  const handleStatusChange = React.useCallback((orderId: number, status: 'new' | 'in-progress' | 'completed') => {
-    console.log(`Display: Updating order ${orderId} to status ${status}`);
-    updateOrderStatus(orderId, status);
+  const handleStatusChange = React.useCallback((orderId: number) => {
+    return (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log(`Display: Updating order ${orderId} to status completed`);
+      updateOrderStatus(orderId, 'completed');
+    };
   }, [updateOrderStatus]);
 
   const handleCancelOrder = React.useCallback((orderId: number) => {
-    if (window.confirm(`注文 #${orderId} を取り消しますか？`)) {
-      console.log(`Display: Canceling order ${orderId}`);
-      cancelOrder(orderId);
-    }
+    return (e: React.MouseEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (window.confirm(`注文 #${orderId} を取り消しますか？`)) {
+        console.log(`Display: Canceling order ${orderId}`);
+        cancelOrder(orderId);
+      }
+    };
   }, [cancelOrder]);
 
   const formatTime = (timestamp: string) => {
@@ -144,7 +152,7 @@ const OrderDisplayPage: React.FC = () => {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
           {sortedOrders.map((order) => (
-            <div key={`display-order-${order.id}-${order.status}`} className="bg-white text-gray-900 rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-200">
+            <div key={`display-order-${order.id}-${order.status}-${order.createdAt}`} className="bg-white text-gray-900 rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-transform duration-200">
               {/* Order Header */}
               <div className={`${getStatusColor(order.status)} p-6 text-white`}>
                 <div className="flex justify-between items-start mb-4">
@@ -177,7 +185,7 @@ const OrderDisplayPage: React.FC = () => {
                 <h4 className="text-xl font-bold mb-4 text-gray-800">Items</h4>
                 <div className="space-y-3 mb-6">
                   {order.items.map((item, index) => (
-                    <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                    <div key={`${order.id}-display-item-${index}`} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
                       <div className="flex items-center space-x-3">
                         <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
                           <span className="text-lg font-bold text-blue-600">{item.quantity}</span>
@@ -198,17 +206,17 @@ const OrderDisplayPage: React.FC = () => {
                 {order.status !== 'completed' && (
                   <div className="flex gap-3">
                     <button
-                      onClick={() => handleCancelOrder(order.id)}
+                      onClick={handleCancelOrder(order.id)}
                       className="flex items-center justify-center space-x-2 flex-1 py-3 bg-red-600 text-white rounded-lg text-lg font-semibold hover:bg-red-700 transition-colors"
-                      data-order-id={order.id}
+                      type="button"
                     >
                       <X size={20} />
                       <span>Cancel</span>
                     </button>
                     <button
-                      onClick={() => handleStatusChange(order.id, 'completed')}
+                      onClick={handleStatusChange(order.id)}
                       className="flex items-center justify-center space-x-2 flex-1 py-3 bg-green-600 text-white rounded-lg text-lg font-semibold hover:bg-green-700 transition-colors"
-                      data-order-id={order.id}
+                      type="button"
                     >
                       <CheckCircle size={20} />
                       <span>Complete</span>
