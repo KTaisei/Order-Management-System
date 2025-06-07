@@ -2,45 +2,33 @@ import { MenuItem } from '../types';
 
 export const menuItems: MenuItem[] = [
   {
-    id: 'yakisoba',
-    name: '焼きそば',
-    price: 500,
+    id: 'cheese_ball_1',
+    name: 'チーズボール_1',
+    price: 140,
     category: 'food'
   },
   {
-    id: 'takoyaki',
-    name: 'たこ焼き',
-    price: 400,
+    id: 'cheese_ball_2',
+    name: 'チーズボール_2',
+    price: 140,
     category: 'food'
   },
   {
-    id: 'karaage',
-    name: '唐揚げ',
-    price: 450,
+    id: 'cheese_ball_3',
+    name: 'チーズボール_3',
+    price: 140,
     category: 'food'
   },
   {
-    id: 'okonomiyaki',
-    name: 'お好み焼き',
-    price: 600,
+    id: 'cheese_ball_4',
+    name: 'チーズボール_なし',
+    price: 120,
     category: 'food'
   },
   {
-    id: 'cola',
-    name: 'コーラ',
-    price: 150,
+    id: 'karupisu',
+    name: 'カルピス',
+    price: 40,
     category: 'drink'
   },
-  {
-    id: 'tea',
-    name: 'お茶',
-    price: 100,
-    category: 'drink'
-  },
-  {
-    id: 'water',
-    name: '水',
-    price: 100,
-    category: 'drink'
-  }
 ];
