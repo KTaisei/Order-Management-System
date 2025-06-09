@@ -73,7 +73,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
       {/* ヘッダー部分 */}
       <div className="flex justify-between items-center p-4 border-b border-gray-200">
         <div className="flex items-center gap-2">
-          <span className="text-lg font-bold">Order #{order.id}</span>
+          <span className="text-lg font-bold">{order.id}</span>
           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeColor()}`}>
             {order.status === 'new' ? 'New' : 
              order.status === 'in-progress' ? 'In Progress' : 
@@ -93,7 +93,7 @@ const OrderCard: React.FC<OrderCardProps> = ({ order, isKitchenView = false }) =
             <li key={`${order.id}-item-${index}`} className="flex justify-between items-center">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{item.quantity}x</span>
-                <span>{item.name}</span>
+                <span className='text-lg font-bold'>{item.name}</span>
               </div>
               <span className="text-gray-600">¥{item.price * item.quantity}</span>
             </li>
