@@ -2,26 +2,32 @@ import { MenuItem } from '../types';
 
 export const menuItems: MenuItem[] = [
   {
-    id: 'cheese_ball_1',
-    name: 'チーズボール_1',
+    id: 'food_1',
+    name: 'たこ焼き',
     price: 140,
     category: 'food'
   },
   {
-    id: 'cheese_ball_2',
-    name: 'チーズボール_2',
+    id: 'food_2',
+    name: 'お好み焼き',
     price: 140,
     category: 'food'
   },
   {
-    id: 'cheese_ball_3',
-    name: 'チーズボール_3',
+    id: 'food_3',
+    name: '焼きそば',
     price: 140,
     category: 'food'
   },
   {
-    id: 'cheese_ball_4',
-    name: 'チーズボール_なし',
+    id: 'food_4',
+    name: '餃子',
+    price: 140,
+    category: 'food'
+  },
+  {
+    id: 'food_5',
+    name: 'かき氷',
     price: 120,
     category: 'food'
   },

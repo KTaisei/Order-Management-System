@@ -1,139 +1,107 @@
-# Cultural Festival Order Management System
-A real-time order management system designed for food stalls, enabling seamless communication between the register and kitchen terminals over a local network.
+🎪 注文管理システム
 
-## Features
+ローカルネットワークで動作する、リアルタイム注文管理システムです。レジ端末とキッチン端末をシームレスに連携し、注文状況を即時に共有できます。
 
-### 🔥 Key Features
-- **Real-time Order Synchronization**: Instant updates between register and kitchen terminals
-- **Multi-Terminal Support**: Dedicated interfaces for both register and kitchen staff
-- **Order Status Tracking**: Track orders from creation to completion
-- **Sales Analytics**: Comprehensive sales data visualization
-- **Local Network Operation**: Works within a local network without internet dependency
+⸻
 
-### 💻 Terminal Types
+✅ 主な機能
+	•	🔄 リアルタイム同期：レジとキッチンが即時通信
+	•	🧑‍🍳 端末別UI：レジ用・キッチン用インターフェースをそれぞれ用意
+	•	📊 売上分析：日別売上、商品別統計、収益グラフ
+	•	🌐 ネット不要：インターネットなしでローカル運用可能
 
-#### Register Terminal
-- Create and manage orders
-- View active order status
-- Track recently completed orders
-- Real-time connection status monitoring
+⸻
 
-#### Kitchen Terminal
-- View incoming orders in real-time
-- Update order status (Start/Complete)
-- Audio notifications for new orders
-- Filter and manage order queue
+🖥 使用端末
 
-#### Analytics Dashboard
-- Daily sales visualization
-- Product-wise sales distribution
-- Total revenue tracking
-- Order volume analytics
+レジ端末
+	•	注文作成・管理
+	•	注文状況の確認
+	•	完了済み履歴表示
+	•	通信状況の表示
 
-## 🛠 Technical Stack
+キッチン端末
+	•	新しい注文をリアルタイム表示
+	•	「調理開始」「完了」ステータス管理
+	•	注文が届いたら音で通知
+	•	フィルター・並び替え対応
 
-- **Frontend**: React + TypeScript + Vite
-- **Styling**: Tailwind CSS
-- **Icons**: Lucide React
-- **Charts**: Chart.js with React-Chartjs-2
-- **Real-time Communication**: Socket.IO
-- **State Management**: React Context
-- **Backend**: Express + Socket.IO Server
+分析ダッシュボード
+	•	日次売上のグラフ表示
+	•	商品別売上ランキング
+	•	総売上・注文数の確認
 
-## 📦 Installation
+⸻
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+🛠 技術構成
+	•	フロントエンド：React + TypeScript + Vite
+	•	スタイリング：Tailwind CSS
+	•	アイコン：Lucide React
+	•	グラフ表示：Chart.js（React-Chartjs-2）
+	•	リアルタイム通信：Socket.IO
+	•	状態管理：React Context
+	•	サーバー：Express + Socket.IO
 
-## 🔧 Configuration
+⸻
 
-### Network Setup
-- The server listens on port 3001
-- Frontend development server runs on port 5173
-- Both servers are configured to accept connections from all network interfaces
+🚀 導入手順（ローカル起動）
 
-### Environment Variables
-No environment variables are required for basic setup.
+1. リポジトリをクローン
 
-## 📱 Usage Guide
+git clone https://github.com/your-username/your-repo.git
+cd your-repo
 
-### Register Terminal
-1. Select food and drink items
-2. Adjust quantities as needed
-3. Add notes if required
-4. Confirm order
-5. Monitor order status in real-time
+2. 依存パッケージをインストール
 
-### Kitchen Terminal
-1. View incoming orders in the "New Orders" section
-2. Click "Start" to begin preparing an order
-3. Click "Complete" when the order is ready
-4. Toggle sound notifications as needed
+npm install
 
-### Analytics Dashboard
-1. View daily sales trends
-2. Check product-wise sales distribution
-3. Monitor total revenue and order count
-4. Switch between analytics and detailed order list views
+3. サーバー（バックエンド）を起動
 
-## 🔍 Order States
+別ターミナルで以下を実行：
 
-- **New**: Order just created
-- **In Progress**: Kitchen has started preparing
-- **Completed**: Order is ready for service
+node server/index.js
 
-## 💡 Best Practices
+4. フロントエンドを起動
 
-1. **Order Management**
-   - Process orders in FIFO (First In, First Out) order
-   - Update order status promptly
-   - Check connection status regularly
+別のターミナルで以下を実行：
 
-2. **Kitchen Operations**
-   - Enable sound notifications during peak hours
-   - Mark orders as "In Progress" before starting preparation
-   - Complete orders promptly to maintain accurate statistics
+npm run dev
 
-3. **Analytics Review**
-   - Monitor daily sales trends
-   - Track popular items
-   - Use insights for inventory management
+※ ローカルネットワーク内の他の端末から接続する場合、server/index.js 内の IP アドレスとポート（通常3001）を確認してアクセスしてください。
 
-## 🔒 Security Considerations
+⸻
 
-- System operates within local network only
-- No sensitive data storage
-- No authentication required (designed for trusted local network)
+📌 注意点
+	•	すべての端末は同じWi-Fi（ローカルネットワーク）に接続してください
+	•	データは localStorage に一時保存されるため、再読み込みでリセットされます
+	•	印刷や外部APIとの連携は非対応です（シンプルな構成）
 
-## ⚠️ Known Limitations
+⸻
 
-- Requires devices to be on the same local network
-- No persistent data storage (data is stored in localStorage)
-- No print receipt functionality
-- No external API integrations
+💬 問題が起きたときは
 
-## 🐛 Troubleshooting
+通信できない
+	•	サーバーが起動しているか確認
+	•	IPアドレスとポートを再確認
+	•	端末が同じネットワークにあるか確認
 
-### Common Issues
+注文が更新されない
+	•	ページを更新する
+	•	サーバーを再起動する
 
-1. **Connection Issues**
-   - Ensure all devices are on the same network
-   - Check if the server is running
-   - Verify correct IP addresses and ports
+⸻
 
-2. **Order Not Updating**
-   - Check connection status indicator
-   - Refresh the page if needed
-   - Restart the server if issues persist
+📝 メニューの改変
 
-## 🤝 Contributing
+data/menu.tsのファイルを開く
 
-Feel free to submit issues and enhancement requests!
+(例)
+id: 'food_1',
+name: 'たこ焼き',
+rice: 140,
+category: 'food'
 
-## 起動方法
+id　,name　.rice　,category　は自由に改変可能
+idのみ、他の商品と被らないように注意すること
 
-一つのターミナルでは、 node server/index.js  を実行し、
-もう一つのターミナルでは、　npm run dev  を実行することにより、バックエンドと、フロントエンドそれぞれが起動する
+⸻
